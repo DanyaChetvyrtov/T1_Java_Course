@@ -1,0 +1,28 @@
+@path=http://localhost:4000/api/users
+
+### ===== register new user =====
+POST {{path}}/register
+Content-Type: application/json
+
+{
+  "login": "pasha",
+  "email": "pasha@example.com",
+  "password": "password456",
+  "passwordConfirmation": "password456"
+}
+
+### ===== login user =====
+POST {{path}}/login
+Content-Type: application/json
+
+{
+  "login": "jane_smith",
+  "password": "password456"
+}
+
+### ===== recieve user by id =====
+GET {{path}}/5
+
+### ===== recieve all users =====
+GET {{path}}
+
