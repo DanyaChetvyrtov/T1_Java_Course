@@ -1,0 +1,2 @@
+CREATE SCHEMA IF NOT EXISTS client_dev;
+CREATE SCHEMA IF NOT EXISTS client_docker;
