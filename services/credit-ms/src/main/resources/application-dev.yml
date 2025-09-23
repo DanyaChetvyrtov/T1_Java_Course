@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/credit_db?currentSchema=${CURRENT_SCHEMA}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        default_schema: ${CURRENT_SCHEMA}

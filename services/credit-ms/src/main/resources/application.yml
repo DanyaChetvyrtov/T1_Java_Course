@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: credit-ms
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+
+  liquibase:
+    enabled: true
+    change-log: db/changelog/db.changelog-master.yml
+
+server:
+  port: 4002

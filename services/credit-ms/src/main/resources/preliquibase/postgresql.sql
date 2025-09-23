@@ -1,0 +1,2 @@
+CREATE SCHEMA IF NOT EXISTS credit_dev;
+CREATE SCHEMA IF NOT EXISTS credit_docker;
