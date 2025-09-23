@@ -1,5 +1,5 @@
 package ru.ex.clientms.enums;
 
 public enum DocumentType {
-    PASSPORT, INT_PASSPORT, BIRTH_CERT
+    PASSPORT, INTERNATIONAL_PASSPORT, BIRTH_CERT, DRIVER_LICENSE
 }
