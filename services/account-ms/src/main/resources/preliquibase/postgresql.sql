@@ -1,0 +1,2 @@
+CREATE SCHEMA IF NOT EXISTS account_dev;
+CREATE SCHEMA IF NOT EXISTS account_docker;
