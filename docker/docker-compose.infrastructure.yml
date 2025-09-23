@@ -1,1 +1,24 @@
 services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres-t1-course-container
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      PGDATA: /data/postgres
+    networks:
+      - t1-course-helper
+    volumes:
+      - postgres-t1-course-volume:/data/postgres
+      - ../scripts/db-initializer.sh:/usr/local/bin/db-initializer.sh
+      - ../scripts/custom-db-entrypoint.sh:/custom-db-entrypoint.sh
+    entrypoint: /custom-db-entrypoint.sh
+    restart: unless-stopped
+
+volumes:
+  postgres-t1-course-volume:
+
+networks:
+  t1-course-helper:
