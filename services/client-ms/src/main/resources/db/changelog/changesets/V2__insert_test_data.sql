@@ -10,6 +10,10 @@ VALUES
     (2, '770200000002', 77, 02, 'Jane', NULL, 'Smith', '1990-07-25'),
     (3, '780100000003', 78, 01, 'Alex', 'B.', 'Kim', '1995-11-05');
 
+INSERT INTO client_db.client_dev.client_sequence(region_code, branch_code, last_value)
+VALUES (77, 1, 0), (77, 2, 0)
+ON CONFLICT (region_code, branch_code) DO NOTHING;
+
 INSERT INTO client_db.client_dev.document (document_id, document_type, document_prefix, document_suffix, client_id)
 VALUES
     ('1234 567890', 'PASSPORT', '1234', '567890', 1),

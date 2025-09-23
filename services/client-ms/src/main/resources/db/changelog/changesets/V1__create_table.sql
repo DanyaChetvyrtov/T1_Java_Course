@@ -6,26 +6,38 @@ CREATE TABLE my_user
     email    VARCHAR(255) NOT NULL UNIQUE
 );
 
--- Индексы для быстрого поиска по логину и email
 CREATE INDEX idx_user_login ON my_user (login);
 CREATE INDEX idx_user_email ON my_user (email);
 
 CREATE TABLE client
 (
     id            BIGSERIAL PRIMARY KEY,
-    user_id       BIGINT NOT NULL UNIQUE,
-    client_id     VARCHAR(20),
-    region_code   INT    NOT NULL,
-    branch_code   INT    NOT NULL,
-    first_name    VARCHAR(255),
+    user_id       BIGINT       NOT NULL UNIQUE,
+    client_id     VARCHAR(20)  NOT NULL UNIQUE,
+    region_code   INT          NOT NULL CHECK (region_code BETWEEN 1 AND 99),
+    branch_code   INT          NOT NULL CHECK (branch_code BETWEEN 1 AND 99),
+    first_name    VARCHAR(255) NOT NULL,
     middle_name   VARCHAR(255),
-    last_name     VARCHAR(255),
+    last_name     VARCHAR(255) NOT NULL,
     date_of_birth DATE,
     CONSTRAINT fk_client_user FOREIGN KEY (user_id) REFERENCES my_user (id) ON DELETE CASCADE
 );
 
--- Индекс для client_id
 CREATE INDEX idx_client_clientid ON client (client_id);
+
+CREATE TABLE IF NOT EXISTS client_sequence
+(
+    id          BIGSERIAL PRIMARY KEY,
+    region_code INT    NOT NULL,
+    branch_code INT    NOT NULL,
+    last_value  BIGINT NOT NULL          DEFAULT 0,
+    created_at  TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    updated_at  TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    UNIQUE (region_code, branch_code)
+);
+
+CREATE INDEX IF NOT EXISTS idx_client_sequence_region_branch
+    ON client_sequence (region_code, branch_code);
 
 CREATE TABLE document
 (
