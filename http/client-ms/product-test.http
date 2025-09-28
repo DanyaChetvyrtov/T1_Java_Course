@@ -8,7 +8,7 @@ Content-Type: {{contentType}}
 
 {
   "name": "Ноутбук Dell XPS 14",
-  "key": "IPO"
+  "key": "DC"
 }
 
 > {%

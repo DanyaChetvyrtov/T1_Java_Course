@@ -1,8 +1,8 @@
 -- Accounts
 INSERT INTO account (client_id, product_id, balance, interest_rate, is_recalc, card_exist, status)
-VALUES (1001, 3001, 15000.00, 12.50, TRUE, TRUE, 'ACTIVE'),
-       (1002, 3002, 8000.00, 10.00, FALSE, FALSE, 'BLOCKED'),
-       (1003, 3003, 25000.00, 8.50, TRUE, TRUE, 'ACTIVE');
+VALUES (1001, 'test', 15000.00, 12.50, TRUE, TRUE, 'ACTIVE'),
+       (1002, 'test', 8000.00, 10.00, FALSE, FALSE, 'BLOCKED'),
+       (1003, 'test', 25000.00, 8.50, TRUE, TRUE, 'ACTIVE');
 
 -- Cards
 INSERT INTO card (account_id, card_id, payment_system, status)

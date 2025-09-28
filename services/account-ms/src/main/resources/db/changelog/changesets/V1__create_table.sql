@@ -2,7 +2,7 @@ CREATE TABLE account
 (
     id            BIGSERIAL PRIMARY KEY,
     client_id     BIGINT         NOT NULL,
-    product_id    BIGINT         NOT NULL,
+    product_id    VARCHAR(50)    NOT NULL,
     balance       NUMERIC(15, 2) NOT NULL,
     interest_rate NUMERIC(5, 2),
     is_recalc     BOOLEAN        NOT NULL DEFAULT FALSE,

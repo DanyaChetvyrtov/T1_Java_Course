@@ -27,9 +27,11 @@ public class Card {
     private String cardId;
 
     @Column(name = "payment_system", nullable = false)
+    @Enumerated(EnumType.STRING)
     private CardPaymentSystem cardPaymentSystem;
 
     @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
     private CardStatus status;
 }
 

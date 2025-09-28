@@ -14,9 +14,10 @@ import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.util.backoff.FixedBackOff;
-import ru.ex.accountms.dto.CreateCardEvent;
-import ru.ex.accountms.dto.CreateClientEvent;
 import ru.ex.accountms.dto.KafkaProperties;
+import ru.ex.accountms.dto.events.CreateCardEvent;
+import ru.ex.accountms.dto.events.CreateClientEvent;
+import ru.ex.accountms.dto.events.TransactionEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -86,6 +87,29 @@ public class KafkaConsumerConfig {
     public ConcurrentKafkaListenerContainerFactory<String, CreateClientEvent> clientEventKafkaListenerContainerFactory() {
         var factory = new ConcurrentKafkaListenerContainerFactory<String, CreateClientEvent>();
         factory.setConsumerFactory(clientEventConsumerFactory());
+        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
+        factory.setCommonErrorHandler(errorHandler());
+        return factory;
+    }
+
+    /**
+     * Конфиг для обработки событий транзакции
+     */
+    @Bean
+    public ConsumerFactory<String, TransactionEvent> transactionEventConsumerFactory() {
+        return new DefaultKafkaConsumerFactory<>(
+                commonProps(),
+                new StringDeserializer(),
+                new JsonDeserializer<>(TransactionEvent.class)
+                        .ignoreTypeHeaders()
+                        .trustedPackages("*")
+        );
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, TransactionEvent> transactionEventKafkaListenerContainerFactory() {
+        var factory = new ConcurrentKafkaListenerContainerFactory<String, TransactionEvent>();
+        factory.setConsumerFactory(transactionEventConsumerFactory());
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
         factory.setCommonErrorHandler(errorHandler());
         return factory;

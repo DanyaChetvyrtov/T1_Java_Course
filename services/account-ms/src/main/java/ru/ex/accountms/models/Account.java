@@ -24,7 +24,7 @@ public class Account {
     private Long clientId;
 
     @Column(name = "product_id", nullable = false)
-    private Long productId;
+    private String productId;
 
     @Column(name = "balance", precision = 15, scale = 2, nullable = false)
     private BigDecimal balance;
@@ -38,6 +38,7 @@ public class Account {
     @Column(name = "card_exist", nullable = false)
     private Boolean cardExist = false;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private AccountStatus status;
 }
