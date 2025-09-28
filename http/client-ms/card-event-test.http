@@ -1,0 +1,10 @@
+@path=http://localhost:4000
+
+### ===== create card event =====
+POST {{path}}/api/cards
+Content-Type: application/json
+
+{
+   "account_owner_id": 1,
+   "card_payment_system": "VISA"
+}

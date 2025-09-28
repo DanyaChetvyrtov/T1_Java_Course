@@ -26,3 +26,5 @@ GET {{path}}/5
 ### ===== recieve all users =====
 GET {{path}}
 
+### ===== delete user =====
+DELETE {{path}}/4

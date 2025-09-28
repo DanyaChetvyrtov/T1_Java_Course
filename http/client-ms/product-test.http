@@ -1,0 +1,60 @@
+### Настройка переменных
+@baseUrl = http://localhost:4000
+@contentType = application/json
+
+### Создание нового продукта
+POST {{baseUrl}}/api/products
+Content-Type: {{contentType}}
+
+{
+  "name": "Ноутбук Dell XPS 14",
+  "key": "IPO"
+}
+
+> {%
+    client.test("Product created successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.id !== null, "Product ID should not be null");
+        client.assert(response.body.productId !== null, "Product ID should be generated");
+        client.global.set("createdProductId", response.body.id);
+    });
+%}
+
+### Получить созданный продукт
+GET {{baseUrl}}/api/products/{{createdProductId}}
+
+> {%
+    client.test("Product retrieved successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.id === client.global.get("createdProductId"), "Product ID mismatch");
+    });
+%}
+
+### Обновить созданный продукт
+PUT {{baseUrl}}/api/products/{{createdProductId}}
+Content-Type: {{contentType}}
+
+{
+  "id": {{createdProductId}},
+  "name": "Обновленный ноутбук Dell XPS 13",
+  "key": {
+    "type": "ELECTRONICS",
+    "code": "NB001-UPDATED"
+  }
+}
+
+> {%
+    client.test("Product updated successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body.name === "Обновленный ноутбук Dell XPS 13", "Name was not updated");
+    });
+%}
+
+### Удалить созданный продукт
+DELETE {{baseUrl}}/api/products/{{createdProductId}}
+
+> {%
+    client.test("Product deleted successfully", function() {
+        client.assert(response.status === 204, "Response status is not 204");
+    });
+%}

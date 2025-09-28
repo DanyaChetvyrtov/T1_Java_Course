@@ -1,0 +1,29 @@
+@path=http://localhost:4000
+
+### ===== create new client =====
+POST {{path}}/api/clients
+Content-Type: application/json
+
+{
+  "userId": 4,
+  "regionCode": 77,
+  "branchCode": 2,
+  "firstName": "Ivan",
+  "middleName": "Petrovich",
+  "lastName": "Ivanov",
+  "dateOfBirth": "1988-05-14",
+  "documents": [
+    {
+      "documentId": "1234 567890",
+      "documentType": "PASSPORT",
+      "documentPrefix": "1234",
+      "documentSuffix": "567890"
+    }
+  ]
+}
+
+### ===== recieve client by ID =====
+GET {{path}}/api/clients/3
+
+### ===== recieve all clients =====
+GET {{path}}/api/clients
