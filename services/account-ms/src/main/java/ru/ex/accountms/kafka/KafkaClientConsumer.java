@@ -4,47 +4,45 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
-import org.springframework.kafka.support.KafkaHeaders;
-import org.springframework.messaging.handler.annotation.Header;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
+import ru.ex.accountms.dto.CreateCardEvent;
+import ru.ex.accountms.dto.CreateClientEvent;
 
 @Slf4j
 @RequiredArgsConstructor
 @Component
 public class KafkaClientConsumer {
 
-    @KafkaListener(id = "${t1.kafka.consumer.group-id}",
-            topics = {
-                    "client_products",
-                    "client_credit_products",
-                    "client_cards"
-            },
-            containerFactory = "kafkaListenerContainerFactory")
-    public void listener(@Payload List<Object> messageList,
-                         Acknowledgment ack,
-                         @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
-                         @Header(KafkaHeaders.RECEIVED_KEY) String key) {
-        log.debug("Client consumer: Обработка новых сообщений");
+//    @KafkaListener(
+//            id = "#{@kafkaProperties.consumer.groupId}",
+//            topics = {
+//                    "#{@kafkaProperties.topics.clientProducts}",
+//                    "#{@kafkaProperties.topics.clientCreditProducts}",
+//                    "#{@kafkaProperties.topics.clientCards}"
+//            },
+//            containerFactory = "kafkaListenerContainerFactory"
+//    )
+//    public void listener(CreateCardEvent message,
+//                         Acknowledgment ack,
+//                         @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
+//                         @Header(KafkaHeaders.RECEIVED_KEY) String key) {
+//        log.debug("Client consumer: обработка одного сообщения");
+//        try {
+//            log.info("Topic: {}, Key: {}, Value: {}", topic, key, message);
+//        } finally {
+//            ack.acknowledge();
+//        }
+//    }
 
-        try {
-            log.error("Topic: " + topic);
-            log.error("Key: " + key);
-            messageList.stream()
-                    .forEach(System.err::println);
-//            List<Client> clients = messageList.stream()
-//                    .map(dto -> {
-//                        dto.setFirstName(key + "@" + dto.getFirstName());
-//                        return ClientMapper.toEntity(dto);
-//                    })
-//                    .toList();
-//            clientService.registerClients(clients);
-        } finally {
-            ack.acknowledge();
-        }
+    @KafkaListener(topics = "client_cards", containerFactory = "cardEventKafkaListenerContainerFactory")
+    public void onCardEvent(CreateCardEvent event, Acknowledgment ack) {
+        log.info("Got card event {}", event);
+        ack.acknowledge();
+    }
 
-        log.debug("Client consumer: записи обработаны");
+    @KafkaListener(topics = "client_products", containerFactory = "clientEventKafkaListenerContainerFactory")
+    public void onClientEvent(CreateClientEvent event, Acknowledgment ack) {
+        log.info("Got client event {}", event);
+        ack.acknowledge();
     }
 }

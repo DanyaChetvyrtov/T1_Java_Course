@@ -1,9 +1,11 @@
 package ru.ex.accountms.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.header.Headers;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.stereotype.Component;
 
@@ -11,10 +13,12 @@ import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class MessageDeserializer<T> extends JsonDeserializer<T> {
 
-    private final ObjectMapper objectMapper;
+    public MessageDeserializer(ObjectMapper objectMapper) {
+        super(objectMapper);
+    }
 
     private static String getMessage(byte[] data) {
         return new String(data, StandardCharsets.UTF_8);
@@ -23,12 +27,9 @@ public class MessageDeserializer<T> extends JsonDeserializer<T> {
     @Override
     public T deserialize(String topic, Headers headers, byte[] data) {
         try {
-
-            objectMapper.readValue(getMessage(data), Object.class);
-
             return super.deserialize(topic, headers, data);
         } catch (Exception e) {
-            log.warn("Произошла ошибка во время десериализации сообщения {}", new String(data, StandardCharsets.UTF_8), e);
+            log.warn("Ошибка десериализации (topic={}): {}", topic, getMessage(data), e);
             return null;
         }
     }
@@ -38,10 +39,8 @@ public class MessageDeserializer<T> extends JsonDeserializer<T> {
         try {
             return super.deserialize(topic, data);
         } catch (Exception e) {
-            log.warn("Произошла ошибка во время десериализации сообщения {}",
-                    new String(data, StandardCharsets.UTF_8), e);
+            log.warn("Ошибка десериализации (topic={}): {}", topic, getMessage(data), e);
             return null;
         }
     }
-
 }
