@@ -1,9 +1,10 @@
 CREATE TABLE my_user
 (
-    id       BIGSERIAL PRIMARY KEY,
-    login    VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    email    VARCHAR(255) NOT NULL UNIQUE
+    id         BIGSERIAL PRIMARY KEY,
+    login      VARCHAR(255) NOT NULL UNIQUE,
+    password   VARCHAR(255) NOT NULL,
+    email      VARCHAR(255) NOT NULL UNIQUE,
+    black_list BOOLEAN      NOT NULL DEFAULT false
 );
 
 CREATE INDEX idx_user_login ON my_user (login);

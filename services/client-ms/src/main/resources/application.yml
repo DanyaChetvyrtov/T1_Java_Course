@@ -9,6 +9,21 @@ spring:
     enabled: true
     change-log: db/changelog/db.changelog-master.yml
 
+t1:
+  scan-path: ru.ex.clientms
+  kafka:
+    bootstrap:
+      server: ${KAFKA_SERVER:localhost:9092}
+    producer:
+      enable: true
+    topic:
+      client_products: client_products
+      client_credit_products: client_credit_products
+      client_cards: client_cards
+    listener:
+      poll-timeout: 1000
+
+
 server:
   port:
     4000
