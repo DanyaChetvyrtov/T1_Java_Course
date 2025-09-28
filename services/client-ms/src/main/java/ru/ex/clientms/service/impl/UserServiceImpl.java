@@ -7,6 +7,7 @@ import ru.ex.clientms.dto.request.UserLoginRequest;
 import ru.ex.clientms.dto.request.UserRegisterRequest;
 import ru.ex.clientms.exception.custom.PasswordMismatchException;
 import ru.ex.clientms.exception.custom.UserAlreadyExist;
+import ru.ex.clientms.exception.custom.UserIsBlocked;
 import ru.ex.clientms.exception.custom.UserNotFound;
 import ru.ex.clientms.mapepr.UserMapper;
 import ru.ex.clientms.models.User;
@@ -28,6 +29,7 @@ public class UserServiceImpl implements UserService {
         validateRegisterRequest(request);
 
         User user = userMapper.toEntity(request);
+        user.setInBlackList(false);
         user = userRepository.save(user);
 
         return userMapper.toDto(user);
@@ -35,14 +37,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void loginUser(UserLoginRequest request) {
-        var user = userRepository.findByLogin(request.getLogin());
-
-        if (user.isEmpty())
-            throw new UserNotFound("User with '" + request.getLogin() + "' login not found");
-
-        // TODO: добавить поле isActive и сделать его валидацию также добавить ручку, чтоб заблочить юзера
-        if (!user.get().getPassword().equals(request.getPassword()))
-            throw new PasswordMismatchException("Invalid password");
+        validateLoginRequest(request);
     }
 
     @Override
@@ -59,6 +54,11 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(UserNotFound::new);
     }
 
+    @Override
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
+    }
+
     private void validateRegisterRequest(UserRegisterRequest request) {
         if (!request.getPassword().equals(request.getPasswordConfirmation()))
             throw new PasswordMismatchException("Passwords do not match");
@@ -68,5 +68,18 @@ public class UserServiceImpl implements UserService {
 
         if (userRepository.existsByEmail(request.getEmail()))
             throw new UserAlreadyExist("User with '" + request.getEmail() + "' email already exists");
+    }
+
+    private void validateLoginRequest(UserLoginRequest request) {
+        var user = userRepository.findByLogin(request.getLogin());
+
+        if (user.isEmpty())
+            throw new UserNotFound("User with '" + request.getLogin() + "' login not found");
+
+        if (user.get().getInBlackList())
+            throw new UserIsBlocked("User with '" + request.getLogin() + "' in black list");
+
+        if (!user.get().getPassword().equals(request.getPassword()))
+            throw new PasswordMismatchException("Invalid password");
     }
 }

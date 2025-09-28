@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -19,7 +20,8 @@ import java.time.LocalDateTime;
 public class Product {
     @Id
     @EqualsAndHashCode.Include
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_seq")
+    @SequenceGenerator(name = "product_seq", sequenceName = "product_id_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "name", nullable = false)
@@ -30,9 +32,6 @@ public class Product {
     @Column(name = "product_key", nullable = false)
     private Key key;
 
-    // должен быть уникальный, т.е. нужно будет поставить
-    // constraint на поле в бд
-    //- productId (key + id)
     @Column(name = "product_id", nullable = false, unique = true)
     private String productId;
 
@@ -42,5 +41,11 @@ public class Product {
     @PrePersist
     public void onCreate() {
         this.createdAt = LocalDateTime.now();
+        generateProductId();
+    }
+
+    private void generateProductId() {
+        if (this.productId == null && this.id != null && this.key != null)
+            this.productId = this.key.toString() + this.id;
     }
 }

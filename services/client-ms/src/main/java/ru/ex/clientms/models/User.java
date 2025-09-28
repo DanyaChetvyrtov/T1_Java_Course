@@ -3,6 +3,7 @@ package ru.ex.clientms.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity
@@ -32,4 +33,8 @@ public class User {
     @NotBlank
     @Column(name = "email", nullable = false, unique = true)
     private String email;
+
+    @NotNull
+    @Column(name = "black_list", nullable = false)
+    private Boolean inBlackList;
 }
