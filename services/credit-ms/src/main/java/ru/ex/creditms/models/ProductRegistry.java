@@ -27,7 +27,7 @@ public class ProductRegistry {
     private Long accountId;
 
     @Column(name = "product_id", nullable = false)
-    private Long productId;
+    private String productId;
 
     @Column(name = "interest_rate", precision = 5, scale = 2, nullable = false)
     private BigDecimal interestRate;

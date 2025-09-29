@@ -1,8 +1,8 @@
 -- Продукты
 INSERT INTO product_registry (client_id, account_id, product_id, interest_rate, open_date)
-VALUES (1001, 2001, 3001, 12.50, '2023-01-15'),
-       (1002, 2002, 3002, 10.00, '2023-05-10'),
-       (1003, 2003, 3003, 7.75, '2024-02-01');
+VALUES (1001, 2001, 'test', 12.50, '2023-01-15'),
+       (1002, 2002, 'test', 10.00, '2023-05-10'),
+       (1003, 2003, 'test', 7.75, '2024-02-01');
 
 -- Платежи для первого продукта (id = 1)
 INSERT INTO payment_registry (product_registry_id, payment_date, amount, interest_rate_amount, debt_amount, expired,

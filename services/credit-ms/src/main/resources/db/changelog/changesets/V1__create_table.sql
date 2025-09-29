@@ -3,7 +3,7 @@ CREATE TABLE product_registry
     id            BIGSERIAL PRIMARY KEY,
     client_id     BIGINT        NOT NULL,
     account_id    BIGINT        NOT NULL,
-    product_id    BIGINT        NOT NULL,
+    product_id    VARCHAR(50)   NOT NULL,
     interest_rate NUMERIC(5, 2) NOT NULL,
     open_date     DATE          NOT NULL
 );
