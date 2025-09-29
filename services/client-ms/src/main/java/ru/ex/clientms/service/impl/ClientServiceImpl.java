@@ -3,6 +3,7 @@ package ru.ex.clientms.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.ex.clientms.dto.ClientDocumentsDto;
 import ru.ex.clientms.dto.ClientDto;
 import ru.ex.clientms.dto.DocumentDto;
 import ru.ex.clientms.exception.custom.ClientNotFound;
@@ -70,6 +71,21 @@ public class ClientServiceImpl implements ClientService {
         client.addDocument(documentMapper.toEntity(documentDto));
         client = clientRepository.save(client);
         return clientMapper.toDto(client);
+    }
+
+    @Override
+    public ClientDocumentsDto getClientDocuments(Long id) {
+        Client client = clientRepository.findById(id).orElseThrow(ClientNotFound::new);
+        List<DocumentDto> documents = client.getDocuments().stream()
+                .map(documentMapper::toDto)
+                .collect(Collectors.toList());
+        return ClientDocumentsDto.builder()
+                .id(id)
+                .firstName(client.getFirstName())
+                .middleName(client.getMiddleName())
+                .lastName(client.getLastName())
+                .documents(documents)
+                .build();
     }
 }
 

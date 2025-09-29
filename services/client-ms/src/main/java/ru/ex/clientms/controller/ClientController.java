@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.ex.clientms.dto.ClientDocumentsDto;
 import ru.ex.clientms.dto.ClientDto;
 import ru.ex.clientms.dto.DocumentDto;
 import ru.ex.clientms.service.ClientService;
@@ -39,5 +40,10 @@ public class ClientController {
     public ResponseEntity<ClientDto> addNewDocument(
             @PathVariable Long id, @Validated @RequestBody DocumentDto documentDto) {
         return ResponseEntity.ok(clientService.addNewDocument(id, documentDto));
+    }
+
+    @GetMapping("/clients/{id}/documents")
+    public ResponseEntity<ClientDocumentsDto> checkClientDocuments(@PathVariable Long id) {
+        return ResponseEntity.ok(clientService.getClientDocuments(id));
     }
 }

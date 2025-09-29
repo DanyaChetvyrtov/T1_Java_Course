@@ -1,5 +1,6 @@
 package ru.ex.clientms.service;
 
+import ru.ex.clientms.dto.ClientDocumentsDto;
 import ru.ex.clientms.dto.ClientDto;
 import ru.ex.clientms.dto.DocumentDto;
 
@@ -13,4 +14,6 @@ public interface ClientService {
     ClientDto getClientById(Long id);
 
     ClientDto addNewDocument(Long id, DocumentDto documentDto);
+
+    ClientDocumentsDto getClientDocuments(Long id);
 }

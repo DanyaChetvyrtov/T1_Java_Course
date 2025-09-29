@@ -14,7 +14,7 @@ import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.util.backoff.FixedBackOff;
-import ru.ex.accountms.dto.KafkaProperties;
+import ru.ex.accountms.kafka.KafkaProperties;
 import ru.ex.accountms.dto.events.CreateCardEvent;
 import ru.ex.accountms.dto.events.CreateClientEvent;
 import ru.ex.accountms.dto.events.TransactionEvent;
